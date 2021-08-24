@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path')
 let options = new chrome.Options()
 
-options.addExtensions(encode(path.resolve(__dirname, '/Users/natesmac/IdeaProjects/getdata/extension_4_32_0_0.crx')))
+options.addExtensions(encode(path.resolve(__dirname, 'C:/Users/nate/IdeaProjects/getdata/extension_4_32_0_0.crx')))
 
 
 function encode(file) {
@@ -44,17 +44,13 @@ async function firebaseStorage() {
 
     driver = await new Builder().forBrowser('chrome').setChromeOptions(options).
         build();
-
-
     //chrome.setDefaultService(new chrome.ServiceBuilder('/Users/natesmac/IdeaProjects/getdata/chromedriver').build());
 
-    await driver.get('https://overwatch.op.gg/leaderboards?platform=pc');
-
-
+    await driver.get('https://overwatch.op.gg/leaderboards?platform=pc&role_id=0&page=11');
 
     try {
 
-        for(let i = 1; i<10; i++) {
+        for(let i = 1; i<12; i++) {
             await sleep(500)
             let namer = await driver.findElements(By.css('#LeaderBoardsLayoutContent > table > tbody > tr:nth-child(n) > td.ContentCell.ContentCell-Player > a > b'))
             await sleep(500)
@@ -78,7 +74,7 @@ async function firebaseStorage() {
 
             await sleep(500)
             //click the next button
-           await driver.get(`https://overwatch.op.gg/leaderboards?platform=pc&role_id=0&page=${i+1}`)
+           await driver.get(`https://overwatch.op.gg/leaderboards?platform=pc&role_id=0&page=${11+(i*7)}`)
 
 
 
@@ -146,7 +142,7 @@ async function getTags(list) {
                 tag = await tag.getText()
                 console.log(tag)
                 if (tag.includes('#')) {
-                    firebase.database().ref().child("battleTags").push(tag);
+                    firebase.database().ref().child("battleTagsforBadPlayers").push(tag);
                 }
             }
 

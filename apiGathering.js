@@ -19,21 +19,22 @@ function initalize () {
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 }
+let counter = 0;
 
-
-const apiDataCollection = (index = 10500)=> {
-
+const apiDataCollection = (index = 0)=> {
+    let number = 0;
 //filter duplicates
-    firebase.database().ref().child("battleTags").orderByKey().limitToLast(20774-index).once("value").then(async function (snapshot){
-       let first = snapshot.val();
+    firebase.database().ref().child("battleTagsforBadPlayers").orderByKey().limitToLast(10274-index).once("value").then(async function (snapshot){
+       let first = snapshot.val()
 
-        let number = 0;
+
         for(let one in first ) {
             try {
 
                 let ans = first[one];
 
                 number++;
+                counter ++;
                 console.log(number)
 
                 ans = ans.replace(/#/, '-')
@@ -54,12 +55,12 @@ const apiDataCollection = (index = 10500)=> {
             }
             catch(error){
                 console.log(error, "something went wrong")
-                let numbers = number + 2 + 10500
-                console.log(numbers)
-                if(number === 20774) {
+
+                console.log(counter)
+                if(counter === 10270) {
                     process.exit(200)
                 }
-                else{apiDataCollection(numbers)}
+                else{apiDataCollection(counter)}
 
 
 
